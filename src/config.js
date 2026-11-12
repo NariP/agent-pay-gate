@@ -24,6 +24,8 @@ const clientSecret = process.env.PAYPAL_CLIENT_SECRET ?? "";
 export const config = {
   port,
   baseUrl: (process.env.GATE_BASE_URL ?? process.env.RENDER_EXTERNAL_URL ?? `http://localhost:${port}`).replace(/\/$/, ""),
+  // Minutes between pings to our own public address, which keeps a free host from sleeping. 0 turns it off.
+  keepAwakeMinutes: num("KEEP_AWAKE_MIN", process.env.RENDER_EXTERNAL_URL ? 10 : 0),
   // Browser origins allowed to call the MCP endpoint. The gate's own origin is always allowed.
   mcpAllowedOrigins: list("MCP_ALLOWED_ORIGINS"),
   storeFile: process.env.GATE_STORE_FILE ?? join(ROOT, "local", "data", "store.json"),

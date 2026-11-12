@@ -153,7 +153,7 @@ Browser pages from other origins cannot call `/mcp` unless you list them in `MCP
 2. Enter `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` and `AI_REVIEW_API_KEY` when asked.
 3. Deploy. The gate reads its public address from Render, so links and PayPal return URLs need no extra setting.
 
-Free services sleep when idle, and the order history is a file, so it starts empty after each restart.
+Free services sleep when idle. On Render the gate pings its own address every 10 minutes to stay awake (`KEEP_AWAKE_MIN`, `0` to turn off), and `.github/workflows/keep-awake.yml` does the same from outside. The order history is a file, so it starts empty after each restart.
 
 ### Try it
 

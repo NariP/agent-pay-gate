@@ -49,6 +49,12 @@ web.listen(config.port, () =>
 //   --http           a long-running server; agents connect to <base URL>/mcp
 if (process.argv.includes("--http")) {
   log(`MCP endpoint at ${config.baseUrl}/mcp`);
+  if (config.keepAwakeMinutes > 0) {
+    // A request through the public address counts as traffic, so the host keeps the service running.
+    const ping = () => fetch(`${config.baseUrl}/healthz`, { signal: AbortSignal.timeout(30_000) }).catch((error) => log("keep-awake ping failed:", error.message));
+    setInterval(ping, config.keepAwakeMinutes * 60_000).unref();
+    log(`keep-awake ping every ${config.keepAwakeMinutes} min`);
+  }
 } else {
   await newMcpServer().connect(new StdioServerTransport());
   log("MCP server ready on stdio");
