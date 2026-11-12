@@ -5,6 +5,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { GateError } from "./gate.js";
 import { format } from "./money.js";
 import { shopPage } from "./shop.js";
+import { AI_ERROR_MESSAGE } from "./ai-error.js";
 import { ROOT } from "./config.js";
 
 const esc = (value) =>
@@ -194,7 +195,9 @@ export function createWebServer({ gate, config, mockPayPal, newMcpServer, agent 
     try {
       emit({ type: "history", messages: await agent(history, message, emit) });
     } catch (error) {
-      emit({ type: "error", message: "The agent could not answer just now. Please try again." });
+      const code = AI_ERROR_MESSAGE[error.code] ? error.code : "AI_UNAVAILABLE";
+      console.error("[agent-pay-gate] chat failed:", error.message);
+      emit({ type: "error", code, message: AI_ERROR_MESSAGE[code] });
     }
     res.end();
   };

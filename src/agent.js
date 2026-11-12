@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { aiErrorFrom } from "./ai-error.js";
 
 const MAX_ROUNDS = 6;
 
@@ -44,7 +45,7 @@ export function createAgent({ apiKey, baseUrl, model, tools, merchantName, timeo
         tools: toolSpecs,
       }),
     });
-    if (!response.ok) throw new Error(`Agent model returned ${response.status}`);
+    if (!response.ok) throw await aiErrorFrom(response);
     const message = (await response.json()).choices?.[0]?.message;
     if (!message) throw new Error("Agent model returned no message");
     return message;

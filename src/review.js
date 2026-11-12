@@ -1,3 +1,5 @@
+import { aiErrorFrom } from "./ai-error.js";
+
 const SYSTEM = `You check orders that an AI shopping agent built for a human.
 You get the human's request as the agent reported it, and the cart the agent built.
 Compare only products and quantities: is each requested product in the cart, in the requested quantity, with nothing extra?
@@ -35,7 +37,7 @@ export function createReviewer({ apiKey, baseUrl, model, timeoutMs = 8000, fetch
         ],
       }),
     });
-    if (!response.ok) throw new Error(`Order review model returned ${response.status}`);
+    if (!response.ok) throw await aiErrorFrom(response);
 
     const data = await response.json();
     return { ...parseVerdict(data.choices?.[0]?.message?.content), model };

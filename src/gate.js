@@ -143,7 +143,7 @@ export class Gate {
       const review = await this.reviewer(quote);
       this.patch(quote.id, { review }, "REVIEWED", `AI order check: ${review.verdict}. ${review.reason}`);
     } catch (error) {
-      this.patch(quote.id, {}, "REVIEW_SKIPPED", `AI order check unavailable (${error.message})`);
+      this.patch(quote.id, {}, "REVIEW_SKIPPED", `AI order check skipped (${error.code ?? "AI_UNAVAILABLE"})`);
     }
   }
 
