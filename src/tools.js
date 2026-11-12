@@ -28,10 +28,11 @@ export function createTools({ gate, config, log = () => {} }) {
     {
       name: "list_products",
       title: "List products",
-      description: `List what ${config.merchantName} sells, with SKUs and prices in USD.`,
+      description: `List what ${config.merchantName} sells, with SKUs and prices in USD, and whether payments here are test (sandbox) or real.`,
       shape: {},
       run: async () => ({
         merchant: config.merchantName,
+        payment_environment: config.paymentEnvironment,
         products: catalog.map((p) => ({ sku: p.sku, name: p.name, price: format(p.priceCents), note: p.note })),
         agent_order_limits: { per_order: format(config.policy.maxOrderCents), per_24_hours: format(config.policy.dailyLimitCents) },
       }),
@@ -61,6 +62,7 @@ export function createTools({ gate, config, log = () => {} }) {
         return {
           ...summary(quote),
           approval_url: quote.reviewUrl,
+          payment_environment: config.paymentEnvironment,
           ...(quote.review ? { order_check: { verdict: quote.review.verdict, reason: quote.review.reason } } : {}),
           next_step: "Give approval_url to the user. Only they can approve, in PayPal. After they say they approved, call check_payment.",
         };

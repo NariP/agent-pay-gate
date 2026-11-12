@@ -12,6 +12,7 @@ const config = {
   mcpAllowedOrigins: ["https://agent.test"],
   paypal: { mock: true },
   policy: { maxOrderCents: 2000, dailyLimitCents: 6000, quoteTtlMs: 900_000 },
+  paymentEnvironment: "mock",
 };
 const store = new MemoryStore();
 const mockPayPal = new MockPayPal({ store, baseUrl: config.baseUrl });

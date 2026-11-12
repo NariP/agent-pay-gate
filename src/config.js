@@ -38,16 +38,22 @@ export const config = {
     // Without credentials the gate runs against a local PayPal stand-in so the flow can be tried offline.
     mock: process.env.PAYPAL_MOCK === "1" || !clientId || !clientSecret,
   },
+  // Told to agents and shoppers so nobody has to guess whether real money is involved.
+  get paymentEnvironment() {
+    if (this.paypal.mock) return "mock: a built-in stand-in for PayPal, no payment provider is contacted";
+    if (/sandbox/.test(this.paypal.apiBase)) return "PayPal sandbox: test accounts and test money only, no real charge";
+    return "PayPal live: approved payments move real money";
+  },
   // The demo shopping agent on the storefront. It shares the endpoint and key with the order check.
   agent: {
-    model: process.env.AI_AGENT_MODEL ?? "seed-2-0-pro-260328",
+    model: process.env.AI_AGENT_MODEL ?? "deepseek-v4-1-flash-261017",
     turnsPerTenMinutes: num("AGENT_TURNS_PER_10_MIN", 20),
     turnsPerDay: num("AGENT_TURNS_PER_DAY", 600),
   },
   review: {
     apiKey: process.env.AI_REVIEW_API_KEY ?? "",
     baseUrl: process.env.AI_REVIEW_BASE_URL ?? "https://ark.ap-southeast.bytepluses.com/api/v3",
-    model: process.env.AI_REVIEW_MODEL ?? "seed-2-0-lite-260428",
+    model: process.env.AI_REVIEW_MODEL ?? "deepseek-v4-1-flash-261017",
   },
   policy: {
     maxOrderCents: Math.round(num("MAX_ORDER_USD", 20) * 100),
