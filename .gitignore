@@ -1,0 +1,32 @@
+# Everything that must never be committed lives in local/ or matches a rule below.
+local/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+
+# Documents: README.md is the only one that is published
+*.md
+!/README.md
+docs/
+
+# Agent and tool folders
+.claude/
+.agents/
+.codex/
+.cursor/
+.serena/
+
+# Machine files
+.DS_Store
+*.log
+.idea/
+.vscode/

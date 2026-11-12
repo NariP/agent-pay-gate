@@ -1,0 +1,17 @@
+# Render Blueprint: one free web service built from the Dockerfile.
+# Secrets are not stored here. Render asks for them when the Blueprint is created.
+services:
+  - type: web
+    name: agent-pay-gate
+    runtime: docker
+    plan: free
+    healthCheckPath: /healthz
+    envVars:
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: AI_REVIEW_API_KEY
+        sync: false
+      - key: DAILY_LIMIT_USD
+        value: "1000"

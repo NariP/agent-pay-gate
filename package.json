@@ -1,0 +1,22 @@
+{
+  "name": "agent-pay-gate",
+  "version": "0.1.0",
+  "description": "Human-approved PayPal checkout for AI agents, as an MCP server",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node src/server.js",
+    "serve": "node src/server.js --http"
+  },
+  "keywords": [],
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "packageManager": "pnpm@11.28.11",
+  "engines": {
+    "node": ">=24"
+  }
+}
